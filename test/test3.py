@@ -53,5 +53,14 @@ fitted_prices = model2.plain_vanilla(S0,T,K, discounting)
 
 # Comparison
 print("Fitted prices: ", np.abs(fitted_prices.numpy()-reference_prices.numpy()))
+for i in range(T_len):
+    plt.plot(K,fitted_prices[:,i],label = "Fit "+str(T[i].numpy()))
+    plt.scatter(K,reference_prices[:,i],label = "Ref "+str(T[i].numpy()))
+
+plt.xlabel("K")
+plt.xlabel("V")
+plt.grid()
+plt.legend(bbox_to_anchor=(1.01, 1.0), loc='upper left')
+plt.show()
 
 

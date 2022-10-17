@@ -15,13 +15,16 @@ class Model:
 
     @tf.function
     def MC_paths(self,S0,T,n_paths = 100000,n_steps = 30):
+        n_paths = int(2*(n_paths//2))
         t = tf.linspace(0.,T[T.shape[0]-1],n_steps) 
         t = tf.concat((t,T), axis = 0)
         order = tf.argsort(t)
         t = tf.gather(t, order)
         index = tf.reshape(tf.where(order>n_steps-1),[-1])
         
-        dW = tf.constant(np.random.randn(n_paths,t.shape[0]), dtype = tf.float32) 
+        dW_half = tf.constant(np.random.randn(n_paths//2,t.shape[0]), dtype = tf.float32) 
+        dW = tf.concat((dW_half,-dW_half), axis = 0)
+        
         S = S0*tf.ones(n_paths)
         
         paths = []
